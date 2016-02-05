@@ -47,7 +47,7 @@ namespace :deploy do
   end
 
   task :setup_config do
-    on roles: :app do
+    on roles(:app) do
       sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{fetch(:application)}"
       sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{fetch(:application)}"
       run "mkdir -p #{shared_path}/config"
@@ -58,7 +58,7 @@ namespace :deploy do
   after "deploy:starting", "deploy:setup_config"
 
   task :symlink_config do
-    on roles: :app do
+    on roles(:app) do
       run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     end
   end
@@ -66,7 +66,7 @@ namespace :deploy do
 
   desc "Make sure local git is in sync with remote."
   task :check_revision do
-    on roles: :web do
+    on roles(:web) do
       unless `git rev-parse HEAD` == `git rev-parse origin/master`
         puts "WARNING: HEAD is not the same as origin/master"
         puts "Run `git push` to sync changes."
