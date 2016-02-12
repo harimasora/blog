@@ -26,7 +26,8 @@ set :deploy_to, "/home/#{fetch(:deploy_user)}/apps/#{fetch(:full_app_name)}"
 set :ssh_options, {
   forward_agent: true,
   auth_methods: %w(publickey),
-  user: fetch(:deploy_user)
+  user: fetch(:deploy_user),
+  port: fetch(:port)
 }
 
 # whether we're using ssl or not, used for building nginx
