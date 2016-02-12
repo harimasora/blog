@@ -13,3 +13,6 @@
 /tmp
 
 /config/database.yml
+
+*.DS_Store
+config/deploy/test.rb
