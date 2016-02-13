@@ -69,7 +69,6 @@ set(:symlinks, [
   }
 ])
 
-
 # this:
 # http://www.capistranorb.com/documentation/getting-started/flow/
 # is worth reading for a quick overview of what tasks are called
