@@ -8,19 +8,16 @@ set :deploy_user, 'deployer'
 set :scm, :git
 set :repo_url, "git@github.com:harimasora/#{fetch(:application)}.git"
 
-# Default value for :pty is false
-# set :pty, true
-
 # setup rvm.
 set :rbenv_type, :user
 set :rbenv_ruby, '2.2.2'
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 
-# how many old releases do we want to keep
+# how many old releases do we want to keep, not much
 set :keep_releases, 5
 
-# files we want symlinking to specific entries in shared.
+# files we want symlinking to specific entries in shared
 set :linked_files, %w{config/database.yml}
 
 # dirs we want symlinking to shared
@@ -50,23 +47,25 @@ set(:executable_config_files, %w(
 
 # files which need to be symlinked to other parts of the
 # filesystem. For example nginx virtualhosts, log rotation
-# init scripts etc.
+# init scripts etc. The full_app_name variable isn't
+# available at this point so we use a custom template {{}}
+# tag and then add it at run time.
 set(:symlinks, [
   {
     source: "nginx.conf",
-    link: "/etc/nginx/sites-enabled/#{fetch(:full_app_name)}"
+    link: "/etc/nginx/sites-enabled/{{full_app_name}}"
   },
   {
     source: "unicorn_init.sh",
-    link: "/etc/init.d/unicorn_#{fetch(:full_app_name)}"
+    link: "/etc/init.d/unicorn_{{full_app_name}}"
   },
   {
     source: "log_rotation",
-   link: "/etc/logrotate.d/#{fetch(:full_app_name)}"
+   link: "/etc/logrotate.d/{{full_app_name}}"
   },
   {
     source: "monit",
-    link: "/etc/monit/conf.d/#{fetch(:full_app_name)}.conf"
+    link: "/etc/monit/conf.d/{{full_app_name}}.conf"
   }
 ])
 
